@@ -199,6 +199,10 @@ DROP TABLE ServiceRecord<br>
 
 ![image](https://github.com/gne8522/geneweb/assets/156037229/174d36b7-786b-4706-afa4-6b5ad93ae4b2)
 
+![image](https://github.com/gne8522/geneweb/assets/156037229/72936200-1ec3-4662-b9a1-a0bdbc913163)
+
+![image](https://github.com/gne8522/geneweb/assets/156037229/f845034d-dff9-4469-afb8-6742de96927d)
+
 
 
 
