@@ -1,0 +1,1 @@
+基礎的前端頁面，我是使用bootstrap做畫面呈現，使用Vue來操縱DOM，使用Axios來實現Ajax非同步技術
