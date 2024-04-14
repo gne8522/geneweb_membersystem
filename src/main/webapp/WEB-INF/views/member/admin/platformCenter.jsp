@@ -61,10 +61,9 @@
         </div>
 
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
-
             const app = createApp({
                 data: function () {
                     return {
@@ -74,16 +73,15 @@
                         prizeName: null,
                         discount: null,
                         prizePicBase64: null,
-                        host: host,
-
+                        newhost: newhost,
                     }
                 }
                 , methods: {
                     toAdminPrizeEdit() {
-                        window.location.href = host + '/adminPrizeEdit'
+                        window.location.href = newhost + '/adminPrizeEdit'
                     },
                     toPrizePoolEdit() {
-                        window.location.href = host + '/adminPrizePoolEdit'
+                        window.location.href = newhost + '/adminPrizePoolEdit'
                     },
                     selectImage() {
                         document.querySelector('input[type=file]').click()

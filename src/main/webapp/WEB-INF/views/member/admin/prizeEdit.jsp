@@ -196,10 +196,9 @@
         </div>
 
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
-
             const app = createApp({
                 data: function () {
                     return {
@@ -209,13 +208,12 @@
                         prizeName: null,
                         discount: null,
                         prizePicBase64: null,
-                        host: host,
+                        newhost: newhost,
                         prizePic: null,
-
                     }
                 },
                 created() {
-                    axios.post(host + '/listPrize.controller')
+                    axios.post(newhost + '/listPrize.controller')
                         .then(response => {
                             this.allPrize = response.data.prizepool;
                             console.log(this.allPrize)
@@ -232,7 +230,7 @@
                         let request = {
                             prizeID: this.prizeID
                         }
-                        axios.post(host + '/findPrizeString.controller', request)
+                        axios.post(newhost + '/findPrizeString.controller', request)
                             .then(response => {
                                 this.cardPrize = response.data.prizepool;
                                 // console.log(this.cardPrize)
@@ -275,7 +273,7 @@
                         }
                     },
                     toPrizePoolEdit() {
-                        window.location.href = host + '/adminPrizePoolEdit'
+                        window.location.href = newhost + '/adminPrizePoolEdit'
                     },
                     submitForm() {
                         let formData = new FormData();
@@ -292,7 +290,7 @@
                         formData.append('discount', this.discount);
                         console.log(formData)
                         console.log("getAll" + formData.getAll)
-                        axios.post(host + '/uploadPrizePool.controller', formData)
+                        axios.post(newhost + '/uploadPrizePool.controller', formData)
                             .then(response => {
 
                                 Swal.fire({
@@ -301,7 +299,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then(function () {
-                                    window.location.href = host + "/adminPrizeEdit"
+                                    window.location.href = newhost + "/adminPrizeEdit"
                                 })
                             })
                             .catch(error => {
@@ -332,7 +330,7 @@
                                     let request = {
                                         prizeID: this.prizeID
                                     }
-                                    axios.post(host + '/deletePrize.controller', request)
+                                    axios.post(newhost + '/deletePrize.controller', request)
                                         .then(response => {
                                             Swal.fire({
                                                 title: "刪除成功!!",
@@ -340,7 +338,7 @@
                                                 showConfirmButton: false,
                                                 timer: 1500
                                             }).then(function () {
-                                                window.location.href = host + "/adminPrizeEdit"
+                                                window.location.href = newhost + "/adminPrizeEdit"
                                             })
                                         })
                                         .catch(error => {
@@ -375,7 +373,7 @@
                         }
                         formData.append('prizeName', this.prizeName);
                         formData.append('discount', this.discount);
-                        axios.post(host + '/newPrize.controller', formData)
+                        axios.post(newhost + '/newPrize.controller', formData)
                             .then(response => {
 
                                 Swal.fire({
@@ -384,7 +382,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then(function () {
-                                    window.location.href = host + "/adminPrizeEdit"
+                                    window.location.href = newhost + "/adminPrizeEdit"
                                 })
                             })
                             .catch(error => {

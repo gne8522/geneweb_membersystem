@@ -13,7 +13,6 @@
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-
     </head>
 
     <body>
@@ -24,8 +23,6 @@
                 <jsp:include page="/components/adminSidebar.jsp" />
             </div>
             <div id="app" style="width: 100%;">
-
-
 
 
 
@@ -84,9 +81,9 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
             var jsonData = sessionStorage.getItem("rid");
             console.log(jsonData)
             const app = createApp({
@@ -95,6 +92,7 @@
                         allRecord: null,
                         recordText: null,
                         rid: null,
+                        newhost: newhost,
                     }
                 }, created() {
                     var jsonData = sessionStorage.getItem("rid");
@@ -102,7 +100,7 @@
                     let request = {
                         rid: jsonData,
                     }
-                    axios.post(host + '/findRid.controller', request)
+                    axios.post(newhost + '/findRid.controller', request)
                         .then(response => {
                             this.allRecord = response.data.allRecord
                             var str = this.allRecord.recordText
@@ -118,7 +116,7 @@
                 methods: {
                     gotoCustomerService() {
 
-                        window.location.href = host + "/adminCustomerService"
+                        window.location.href = newhost + "/adminCustomerService"
 
                     },
                     deleteRecord() {
@@ -134,7 +132,7 @@
                                 let request = {
                                     rid: this.rid
                                 }
-                                axios.post(host + '/deleteRid.controller', request)
+                                axios.post(newhost + '/deleteRid.controller', request)
                                     .then(response => {
                                         Swal.fire({
                                             title: "刪除成功!",
@@ -142,7 +140,7 @@
                                             showConfirmButton: false,
                                             timer: 1500
                                         }).then(function () {
-                                            window.location.href = host + "/adminCustomerService"
+                                            window.location.href = newhost + "/adminCustomerService"
                                         })
                                     })
                                     .catch(error => {

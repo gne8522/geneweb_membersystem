@@ -180,7 +180,8 @@ public class AdminController {
 		String birthday = requestBodyJson.getString("birthday");
 		String lotteryTimes = requestBodyJson.getString("lotteryTimes");
 		String mid = requestBodyJson.getString("mid");
-		aService.AdminUpdateMemberData(userAcc, userPwd, userName, email, gender, address, memberLv, userTel, birthday, lotteryTimes,
+		String validation = requestBodyJson.getString("validation");
+		aService.AdminUpdateMemberData(userAcc, userPwd, userName, email, gender, address, memberLv, userTel, birthday, lotteryTimes, validation,
 				mid);
 		return responseJson.toString();
 	}
@@ -521,6 +522,15 @@ public class AdminController {
 		String rid = requestBodyJson.getString("rid");
 		aService.deleteRid(rid);
 		return responseJson.toString();
+	}
+	
+	
+	// 重置所有會員連線狀態
+	@GetMapping("/resetMessagingStatus.controller")
+	@Transactional
+	public String resetMessagingStatus() throws IOException, JSONException {
+		aService.resetMessagingStatus();
+		return "成功!";
 	}
 	
 

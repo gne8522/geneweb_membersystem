@@ -48,6 +48,9 @@ public class MemberController {
 
 		String imagePath = "C:\\Workspace\\development\\images\\memberDefault.jpg";
 		byte[] imageBytes = convertImageToByteArray(imagePath);
+		String address = "未填寫";
+		String memberLv = "1";
+		String lotteryTimes = "5";
 
 		UserData newUser = new UserData();
 		newUser.setUserPic(imageBytes);
@@ -61,6 +64,9 @@ public class MemberController {
 		newUser.setUserTel(userData.getUserTel());
 		newUser.setValidation(userData.getValidation());
 		newUser.setMessaging(userData.getMessaging());
+		newUser.setaddress(address);
+		newUser.setMemberLv(memberLv);
+		newUser.setLotteryTimes(lotteryTimes);
 
 		mService.insert(newUser);
 		return ResponseEntity.ok("Member registered successfully!");

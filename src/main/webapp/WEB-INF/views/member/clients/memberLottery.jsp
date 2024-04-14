@@ -30,10 +30,10 @@
                             style="background-color: rgb(228, 237, 234);">
                             <ol class="breadcrumb" style="margin: 10px 100px 10px 500px">
                                 <li class="breadcrumb-item active" aria-current="page"><a
-                                        href="http://localhost:8080/memberCenter">個人檔案</a></li>
+                                        :href="newhost + '/memberCenter'">個人檔案</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">會員抽獎</li>
                                 <li class="breadcrumb-item active" aria-current="page"><a
-                                    href="http://localhost:8080/customerServiceUser">客服中心</a></li>
+                                    :href="newhost + '/customerServiceUser'">客服中心</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -70,9 +70,9 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp, ref } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
             var jsonDataString = sessionStorage.getItem("loginStatus");
             var jsonData = JSON.parse(jsonDataString);
             const app = createApp({
@@ -89,33 +89,31 @@
                         memberLv: '',
                         lastLotteryDate: new Date().toISOString().split('T')[0],
                         serverTime: '',
+                        newhost: newhost
                     }
                 },
                 created() {
                     var jsonDataString = sessionStorage.getItem("loginStatus");
                     var jsonData = JSON.parse(jsonDataString);
-                    axios.get(host + '/getServerTime.controller').then(response => {
+                    axios.get(newhost + '/getServerTime.controller').then(response => {
                         this.serverTime = response.data.dateString
                     })
                     let request = {
                         mid: jsonData.mid,
                     }
-                    axios.post(host + '/findMidString.controller', request)
+                    axios.post(newhost + '/findMidString.controller', request)
                         .then(response => {
-                            // console.log(this.serverTime)
                             this.memberData = response.data.showAll;
                             this.memberLv = this.memberData.memberLv;
                             this.lotteryTimes = this.memberData.lotteryTimes;
                             let lastLotteryDate = this.memberData.lastLotteryDate;
                             let serverTime = this.serverTime
-                            // lastLotteryDate.setHours(0, 0, 0, 0);
-                            // serverTime.setHours(0, 0, 0, 0);
                             if (lastLotteryDate < serverTime) {
                                 let lotteryTimesUpdateNoDate = {
                                     lotteryTimes: this.memberLv,
                                     mid: this.mid
                                 }
-                                axios.post(host + '/updatelotteryTimesNoDate.controller', lotteryTimesUpdateNoDate)
+                                axios.post(newhost + '/updatelotteryTimesNoDate.controller', lotteryTimesUpdateNoDate)
                             }
                         })
                         .catch(error => {
@@ -124,12 +122,12 @@
                 },
                 methods: {
                     lottery() {
-                        axios.get(host + '/memberLottery.controller').then(response => {
+                        axios.get(newhost + '/memberLottery.controller').then(response => {
                             this.lotteryNumber = response.data.lotteryResult;
                             let request = {
                                 prizepoolID: this.lotteryNumber
                             }
-                            axios.post(host + '/findPrizePoolString.controller', request).then(response => {
+                            axios.post(newhost + '/findPrizePoolString.controller', request).then(response => {
                                 let responseData = response.data.prizepool;
                                 this.prizeName = responseData.prizeName;
                                 this.prizePicBase64 = responseData.prizePicBase64;
@@ -166,7 +164,7 @@
                                             newPrizeID: this.prizeID,
                                             newMid: this.mid
                                         }
-                                        axios.post(host + '/InsertPrizetoUserStorage.controller', request).then(response => {
+                                        axios.post(newhost + '/InsertPrizetoUserStorage.controller', request).then(response => {
 
                                         })
                                     });
@@ -176,7 +174,7 @@
                                     lastLotteryDate: this.lastLotteryDate,
                                     mid: this.mid
                                 }
-                                axios.post(host + '/lotteryTimesUpdate.controller', lotteryTimesUpdate)
+                                axios.post(newhost + '/lotteryTimesUpdate.controller', lotteryTimesUpdate)
                                 this.lotteryTimes = this.lotteryTimes - 1
 
 

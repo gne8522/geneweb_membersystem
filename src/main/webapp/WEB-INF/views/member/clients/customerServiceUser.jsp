@@ -32,9 +32,9 @@
                             style="background-color: rgb(228, 237, 234);">
                             <ol class="breadcrumb" style="margin: 10px 100px 10px 500px">
                                 <li class="breadcrumb-item active" aria-current="page"><a
-                                        href="http://localhost:8080/memberCenter">個人檔案</a></li>
+                                        :href="newhost + '/memberCenter'">個人檔案</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a
-                                        href="http://localhost:8080/memberLottery">會員抽獎</a></li>
+                                        :href="newhost + '/memberLottery'">會員抽獎</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">客服中心</li>
                             </ol>
                         </nav>
@@ -97,14 +97,12 @@
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
             var appInstance;
             let isConnected = false;
-
             let date = new Date().toISOString();
             let currentDate = new Date(date);
             currentDate.setHours(currentDate.getHours() + 8);
@@ -129,11 +127,12 @@
                         messageInput: null,
                         NowDate: formattedDate,
                         recordType: null,
+                        newhost: newhost,
                     }
                 },
                 methods: {
                     connect() {
-                        axios.get(host + '/countMessaging.controller')
+                        axios.get(newhost + '/countMessaging.controller')
                             .then(response => {
                                 const connectionCount = response.data;
                                 if (connectionCount === 0) {
@@ -163,12 +162,12 @@
                                                 oncall: '1',
                                                 problemType: this.recordType,
                                             }
-                                            axios.post(host + '/AdminUpdateOncall.controller', requestAdmin)
+                                            axios.post(newhost + '/AdminUpdateOncall.controller', requestAdmin)
 
 
 
                                             console.log(this.recordType);
-                                            axios.post(host + '/updateMessagingStatus.controller', request)
+                                            axios.post(newhost + '/updateMessagingStatus.controller', request)
                                                 .then(response => {
                                                     const sock = new SockJS(this.websocketUrl);
                                                     this.client = Stomp.over(sock);
@@ -217,7 +216,7 @@
                                 messaging: '0',
                                 mid: this.mid
                             };
-                            axios.post(host + '/updateMessagingStatus.controller', request).then
+                            axios.post(newhost + '/updateMessagingStatus.controller', request).then
                                 (() => {
                                     setTimeout(() => {
                                         this.client.disconnect();
@@ -237,7 +236,7 @@
                                 oncall: '0',
                                 problemType: '沒問題',
                             }
-                            axios.post(host + '/AdminUpdateOncall.controller', requestAdmin)
+                            axios.post(newhost + '/AdminUpdateOncall.controller', requestAdmin)
 
 
                             let request = {
@@ -246,8 +245,7 @@
                                 recordDate: this.NowDate,
                                 recordText: JSON.stringify(this.messages)
                             }
-                            axios.post(host + '/insertServiceRecord.controller', request)
-                            console.log(this.messages)
+                            axios.post(newhost + '/insertServiceRecord.controller', request)
                         }, 1100);
 
 
@@ -255,11 +253,7 @@
 
                     },
                     showMessage(message) {
-
                         this.messages.push(message);
-                        console.log(message.content)
-
-
                     },
                     sendMessage() {
                         let content = this.userAcc + ' ： ' + this.messageInput;
@@ -276,7 +270,7 @@
                     oncall: '0',
                     problemType: '沒問題',
                 }
-                axios.post(host + '/AdminUpdateOncall.controller', requestAdmin)
+                axios.post(newhost + '/AdminUpdateOncall.controller', requestAdmin)
 
                 let request = {
                     serviceTarget: this.mid,
@@ -284,13 +278,10 @@
                     recordDate: formattedDate,
                     recordText: JSON.stringify(this.messages)
                 }
-                axios.post(host + '/insertServiceRecord.controller', request)
+                axios.post(newhost + '/insertServiceRecord.controller', request)
                 if (appInstance.connected) {
-
-                    console.log(this.messages)
                     event.preventDefault();
                     appInstance.disconnect();
-
                 }
             });
 

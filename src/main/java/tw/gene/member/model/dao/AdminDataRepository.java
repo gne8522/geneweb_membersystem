@@ -39,9 +39,9 @@ public interface AdminDataRepository extends JpaRepository<AdminData, Integer> {
 	@Transactional
 	@Query("UPDATE UserData SET userAcc = ?1, userPwd = ?2, userName = ?3, "
 			+ "email = ?4, gender = ?5, address = ?6, memberLv = ?7, "
-			+ "userTel = ?8, birthday = ?9, lotteryTimes = ?10 WHERE mid = ?11")
+			+ "userTel = ?8, birthday = ?9, lotteryTimes = ?10, validation = ?11 WHERE mid = ?12")
 	void AdminUpdateMemberData(String userAcc, String userPwd, String userName, String email, String gender,
-			String address, String memberLv, String userTel, String birthday, String lotteryTimes, String mid);
+			String address, String memberLv, String userTel, String birthday, String lotteryTimes, String validation, String mid);
 
 	// Admin呼叫狀態
 	@Modifying

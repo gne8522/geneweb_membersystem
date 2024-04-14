@@ -99,7 +99,7 @@
                                         </div>
 
                                         <div class="form-outline mb-4">
-                                            <input type="text" id="userPwd" name="userPwd" required
+                                            <input type="password" id="userPwd" name="userPwd" required
                                                 class="form-control form-control-lg" v-model="userPwd"
                                                 @blur="userPwdCheck" />
                                             <label class="form-label" for="form3Example8"
@@ -111,7 +111,7 @@
                                                 style="color:green;">✔格式正確</span>
                                         </div>
                                         <div class="form-outline mb-4">
-                                            <input type="text" id="pwdCheck" required
+                                            <input type="password" id="pwdCheck" required
                                                 class="form-control form-control-lg" v-model="pwdCheck"
                                                 @blur="pwdDoubleCheck" /> <label class="form-label" for="form3Example8"
                                                 style="margin-bottom: 0px;">*確認密碼
@@ -208,9 +208,9 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
             const app = createApp({
                 data: function () {
                     return {
@@ -231,7 +231,8 @@
                         selectedCountry: '台灣',
                         selectedCity: '台北市',
                         userTel: '',
-                        userTelValid: null
+                        userTelValid: null,
+                        newhost: newhost
                     }
                 }, methods: {
 
@@ -257,7 +258,7 @@
                         let request = {
                             userAcc: this.userAcc
                         }
-                        axios.post(host + "/finduserAcc.controller", request).then(response => {
+                        axios.post(newhost + "/finduserAcc.controller", request).then(response => {
                             console.log(response.data)
                             if (response.data == "no") {
                                 this.userAccValid = true;
@@ -360,7 +361,7 @@
                                 messaging: '0',
                                 validation: '0',
                             }
-                            axios.post(`${host}/userRegister.controller`, submit).then(() => {
+                            axios.post(newhost + "/userRegister.controller", submit).then(() => {
                                 Swal.fire({
                                     title: "註冊成功!",
                                     text: "請重新登入",
@@ -368,7 +369,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then(function () {
-                                    window.location.href = host + "/index"
+                                    window.location.href = newhost + "/index"
                                 })
 
                             }

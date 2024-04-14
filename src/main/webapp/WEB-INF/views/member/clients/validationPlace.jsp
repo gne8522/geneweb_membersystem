@@ -18,7 +18,7 @@
     <body class="text-center" id="app">
         <main class="form-signin">
 
-            <a href="http://localhost:8080/index"> <img class="mb-4" src="/images/sample02.png" alt="" width="272"
+            <a :href="newhost + '/index'"> <img class="mb-4" src="/images/sample02.png" alt="" width="272"
                     height="157"></a>
             <h1 class="h3 mb-3 fw-normal">Email驗證</h1>
             <button id="countdownButton" @click="startCountdown" class="btn btn-success">寄送驗證碼</button>
@@ -42,9 +42,9 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js";
-            import { host } from '/js/url.js';
             const app = createApp({
                 data: function () {
                     return {
@@ -52,7 +52,7 @@
                         validationNUM: '',
                         userPwd: '',
                         userData: null,
-                        host: host,
+                        newhost: newhost,
                         email: null,
 
                     }
@@ -62,7 +62,6 @@
                         if (this.userValidation == this.validationNUM) {
                             Swal.fire({
                                 title: "登入成功!",
-                                // text: response.data.messages,
                                 icon: "success",
                                 showConfirmButton: false,
                                 timer: 1500
@@ -70,7 +69,7 @@
                                 var jsonDataString = sessionStorage.getItem("Validation");
                                 sessionStorage.setItem("loginStatus", jsonDataString);
                                 sessionStorage.removeItem("Validation");
-                                window.location.href = "http://localhost:8080/index"
+                                window.location.href = newhost + "/index"
                             })
 
                         } else {
@@ -83,57 +82,6 @@
                                 this.userValidation = null;
                             })
                         }
-
-
-
-                        // let request = {
-                        //     userAcc: this.userAcc,
-                        //     userPwd: this.userPwd
-                        // }
-
-                        // axios.post("http://localhost:8080/userlogin.controller", request).then(function (response) {
-                        //     if (response.data.loginStatus === "Admin") {
-                        //         Swal.fire({
-                        //             title: "工作人員歡迎!",
-                        //             icon: "info",
-                        //             showConfirmButton: false,
-                        //             timer: 1500
-                        //         }).then(function () {
-                        //             console.log(response.data.loginStatus)
-                        //             sessionStorage.setItem("catalog", "1");
-                        //             sessionStorage.setItem("adminData", JSON.stringify(response.data.adminData));
-                        //             window.location.href = "http://localhost:8080/backend"
-                        //         })
-
-                        //     } else if (response.data.loginStatus) {
-                        //         console.log(response.data.loginStatus.validation)
-                        //         if (response.data.loginStatus.validation == 'true') {
-                        //             window.location.href = "http://localhost:8080/validationPlace"
-                        //         } else {
-                        //             Swal.fire({
-                        //                 title: "登入成功!",
-                        //                 text: response.data.messages,
-                        //                 icon: "success",
-                        //                 showConfirmButton: false,
-                        //                 timer: 1500
-                        //             }).then(function () {
-                        //                 sessionStorage.setItem("loginStatus", JSON.stringify(response.data.loginStatus));
-
-                        //                 window.location.href = "http://localhost:8080/index"
-                        //             })
-                        //         }
-
-                        //     } else {
-                        //         Swal.fire({
-                        //             title: response.data.messages,
-                        //             icon: "error",
-                        //             showConfirmButton: false,
-                        //             timer: 1500
-                        //         }).then(function () {
-                        //             window.location.href = "http://localhost:8080/login"
-                        //         })
-                        //     }
-                        // }).catch();
 
                     },
                     startCountdown() {
@@ -155,7 +103,7 @@
                         let request = {
                             userEmail: jsonData.email
                         }
-                        axios.post("http://localhost:8080/sendVerificationEmail", request).then((response) => {
+                        axios.post(newhost + "/sendVerificationEmail", request).then((response) => {
 
                             this.validationNUM = response.data.verificationCode;
                             console.log(this.validationNUM)

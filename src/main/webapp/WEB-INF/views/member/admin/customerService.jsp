@@ -71,6 +71,8 @@
 
 
                     <div>
+                        <button type="button" class="btn btn-warning" @click="resetCustomerStatus">重置會員連線狀態</button>
+                        &nbsp;&nbsp;
                         <button type="button" class="btn btn-primary" @click="showRecord" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">客服紀錄</button>
                     </div>
@@ -227,20 +229,13 @@
 
 
 
-
-
-
-
-
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
             var appInstance;
             let isConnected = false;
-
             var jsonDataString = sessionStorage.getItem("adminData");
             var jsonData = JSON.parse(jsonDataString);
             const app = createApp({
@@ -257,7 +252,7 @@
                         nameInput: null,
                         messageInput: null,
                         allMember: [],
-                        host: host,
+                        newhost: newhost,
                         mid: '',
                         fuzzySearch: '',
                         midEdit: null,
@@ -320,7 +315,7 @@
                         let request = {
                             fuzzySearch: this.fuzzySearch
                         }
-                        axios.post(host + '/fuzzySearch.controller', request)
+                        axios.post(newhost + '/fuzzySearch.controller', request)
                             .then(response => {
                                 this.allMember = response.data.showAll;
                                 this.fuzzySearch = null;
@@ -350,7 +345,7 @@
                                 let request = {
                                     mid: this.mid
                                 }
-                                axios.post(host + '/findMidString.controller', request)
+                                axios.post(newhost + '/findMidString.controller', request)
                                     .then(response => {
                                         let showAll = response.data.showAll;
                                         this.userEmail = showAll.email;
@@ -359,7 +354,7 @@
                                             userEmail: this.userEmail,
                                             userPwd: this.userPwd
                                         }
-                                        axios.post(host + '/sendPasswordEmail', request)
+                                        axios.post(newhost + '/sendPasswordEmail', request)
                                         Swal.fire({
                                             title: "傳送成功!",
                                             icon: "success",
@@ -387,11 +382,10 @@
                         let request = {
                             mid: this.midQuery
                         }
-                        axios.post(host + '/findMidList.controller', request)
+                        axios.post(newhost + '/findMidList.controller', request)
                             .then(response => {
                                 this.allMember = response.data.showAll;
                                 this.midQuery = null;
-                                console.log(this.allMember)
                             })
                             .catch(error => {
                                 console.error('Error:', error);
@@ -399,7 +393,7 @@
 
                     },
                     showRecord() {
-                        axios.get(host + '/listServiceRecord.controller').then(response => {
+                        axios.get(newhost + '/listServiceRecord.controller').then(response => {
                             this.allServiceRecord = response.data.showAll;
                             console.log(this.allServiceRecord)
                             console.log(this.allServiceRecord[0].rid)
@@ -411,8 +405,18 @@
                         this.rid = getRid.value;
                         console.log(this.rid)
                         sessionStorage.setItem("rid", this.rid)
-                        window.location.href = host + "/adminViewRecord"
+                        window.location.href = newhost + "/adminViewRecord"
 
+                    },
+                    resetCustomerStatus() {
+                        axios.get(newhost + '/resetMessagingStatus.controller').then(response => {
+                            Swal.fire({
+                                title: "重置成功!",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500
+                            })
+                        })
                     },
 
 

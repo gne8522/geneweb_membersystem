@@ -48,7 +48,7 @@
                     <span>
                         <h4><strong>目前沒問題!!</strong></h4>
                     </span>
-                    <img src="http://localhost:8080/images/greenLight.png">
+                    <img src="/images/greenLight.png">
                 </div>
 
                 <div style="margin-top: 30px;" v-if="oncall == '1'">
@@ -57,7 +57,7 @@
                     </span>
                     <span>
                         <h5 style="color: red;">問題類型：{{problemType}}</h5>
-                        <img src="http://localhost:8080/images/redLight.png">
+                        <img src="/images/redLight.png">
                         <br>
                         <br>
                         <button class="btn btn-primary mb-3" @click="toServiceCenter">接受請求</button>
@@ -69,23 +69,18 @@
         </div>
 
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
-
-
             var jsonDataString = sessionStorage.getItem("adminData");
             var jsonData = JSON.parse(jsonDataString);
-            console.log(jsonData)
-
-
-
             const app = createApp({
                 data: function () {
                     return {
                         adminData: jsonData,
                         oncall: null,
                         problemType: null,
+                        newhost: newhost
                     }
                 },
                 created() {
@@ -96,7 +91,7 @@
                         adminID: jsonData.adminID
                     }
 
-                    axios.post(host + '/findAdminString.controller', request).then(response => {
+                    axios.post(newhost + '/findAdminString.controller', request).then(response => {
                         let adminAllData = response.data.AdminShowStatus;
                         this.oncall = adminAllData.oncall;
                         this.problemType = adminAllData.problemType
@@ -109,7 +104,7 @@
                 },
                 methods: {
                     toServiceCenter() {
-                        window.location.href = host + "/adminCustomerService"
+                        window.location.href = newhost + "/adminCustomerService"
                     }
                 }
 

@@ -164,10 +164,9 @@
         </div>
 
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
-
             const app = createApp({
                 data: function () {
                     return {
@@ -178,14 +177,13 @@
                         prizeName: null,
                         discount: null,
                         prizePicBase64: null,
-                        host: host,
+                        newhost: newhost,
                         prizePic: null,
                         prizepoolID: null,
-
                     }
                 },
                 created() {
-                    axios.post(host + '/listPrizePool.controller')
+                    axios.post(newhost + '/listPrizePool.controller')
                         .then(response => {
                             this.allPrize = response.data.prizepool;
                             console.log("this.allPrize" + this.allPrize)
@@ -198,7 +196,7 @@
                     listPrize(index) {
                         let getPrizePoolID = document.querySelectorAll(".prizepoolID")[index];
                         this.prizepoolID = getPrizePoolID.value;
-                        axios.post(host + '/listPrize.controller')
+                        axios.post(newhost + '/listPrize.controller')
                             .then(response => {
                                 this.listallPrize = response.data.prizepool;
                                 console.log(this.listallPrize)
@@ -210,7 +208,7 @@
                             });
                     },
                     toAdminPrizeEdit() {
-                        window.location.href = host + '/adminPrizeEdit'
+                        window.location.href = newhost + '/adminPrizeEdit'
                     },
                     selectImage() {
                         document.querySelector('input[type=file]').click()
@@ -230,8 +228,8 @@
                             newPrizeID: this.prizeID,
                             prizepoolID: this.prizepoolID
                         }
-                        axios.post(host + '/changePrizePool.controller', request).then(response => {
-                            window.location.href = host + "/adminPrizePoolEdit"
+                        axios.post(newhost + '/changePrizePool.controller', request).then(response => {
+                            window.location.href = newhost + "/adminPrizePoolEdit"
                         })
                     },
                     submitForm() {
@@ -245,7 +243,7 @@
                         formData.append('discount', this.discount);
                         console.log(formData)
                         console.log("getAll" + formData.getAll)
-                        axios.post(host + '/uploadPrizePool.controller', formData)
+                        axios.post(newhost + '/uploadPrizePool.controller', formData)
                             .then(response => {
 
                                 Swal.fire({
@@ -254,7 +252,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then(function () {
-                                    window.location.href = host + "/adminPrizeEdit"
+                                    window.location.href = newhost + "/adminPrizeEdit"
                                 })
                             })
                             .catch(error => {
@@ -274,12 +272,10 @@
                             newPrizeID: '1',
                             prizepoolID: this.prizepoolID
                         }
-                        axios.post(host + '/changePrizePool.controller', request).then(response => {
-                            window.location.href = host + "/adminPrizePoolEdit"
+                        axios.post(newhost + '/changePrizePool.controller', request).then(response => {
+                            window.location.href = newhost + "/adminPrizePoolEdit"
                         })
                     },
-
-
 
                 }
 

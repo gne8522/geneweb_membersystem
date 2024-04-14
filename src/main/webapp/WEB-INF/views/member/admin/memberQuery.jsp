@@ -116,23 +116,23 @@
         </div>
 
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
-
             const app = createApp({
                 data: function () {
                     return {
                         allMember: [],
-                        host: host,
+                        newhost: newhost,
                         mid: '',
                         fuzzySearch: '',
                         midEdit: null,
-                        midQuery: ''
+                        midQuery: '',
+                        newhost: newhost
                     }
                 }, created() {
 
-                    axios.get(host + '/findAll.controller')
+                    axios.get(newhost + '/findAll.controller')
                         .then(response => {
                             this.allMember = response.data.showAll;
                             console.log(this.allMember)
@@ -143,7 +143,7 @@
                 },
                 methods: {
                     queryAll() {
-                        axios.get(host + '/findAll.controller')
+                        axios.get(newhost + '/findAll.controller')
                             .then(response => {
                                 this.allMember = response.data.showAll;
                             })
@@ -159,7 +159,7 @@
                         let request = {
                             mid: this.midQuery
                         }
-                        axios.post(host + '/findMidList.controller', request)
+                        axios.post(newhost + '/findMidList.controller', request)
                             .then(response => {
                                 this.allMember = response.data.showAll;
                                 this.midQuery = null;
@@ -178,7 +178,7 @@
                         let request = {
                             fuzzySearch: this.fuzzySearch
                         }
-                        axios.post(host + '/fuzzySearch.controller', request)
+                        axios.post(newhost + '/fuzzySearch.controller', request)
                             .then(response => {
                                 this.allMember = response.data.showAll;
                                 this.fuzzySearch = null;
@@ -191,7 +191,7 @@
                     toEdit(index) {
                         let memberMid = document.querySelectorAll(".memberMid")[index];
                         sessionStorage.setItem("MemberData", memberMid.value);
-                        window.location.href = host + "/adminEdit"
+                        window.location.href = newhost + "/adminEdit"
                     },
 
 

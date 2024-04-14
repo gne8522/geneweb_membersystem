@@ -38,7 +38,6 @@ public class AdminService {
 	@Autowired
 	private UserStorageRepository userStorageRespo;
 
-
 	@Autowired
 	private PrizePoolRepository prizePoolRespo;
 	
@@ -100,9 +99,9 @@ public class AdminService {
 
 	// Admin更新會員資料
 	public void AdminUpdateMemberData(String userAcc, String userPwd, String userName, String email, String gender,
-			String address, String memberLv, String userTel, String birthday, String lotteryTimes, String mid) {
+			String address, String memberLv, String userTel, String birthday, String lotteryTimes,String validation, String mid) {
 		adminRespo.AdminUpdateMemberData(userAcc, userPwd, userName, email, gender, address, memberLv, userTel,
-				birthday,lotteryTimes, mid);
+				birthday,lotteryTimes,validation, mid);
 	}
 
 	// 列出獎品
@@ -188,6 +187,11 @@ public class AdminService {
 	// Admin呼叫狀態
 	public void AdminUpdateOncall(String oncall, String problemType) {
 		adminRespo.AdminUpdateOncall(oncall, problemType);
+	}
+	
+	// 重置所有會員連線狀態
+	public void resetMessagingStatus() {
+		userRespo.resetMessagingStatus();
 	}
 
 

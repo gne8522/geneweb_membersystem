@@ -34,9 +34,9 @@
                             <ol class="breadcrumb" style="margin: 10px 100px 10px 500px">
                                 <li class="breadcrumb-item active" aria-current="page">個人檔案</li>
                                 <li class="breadcrumb-item active" aria-current="page"><a
-                                        href="http://localhost:8080/memberLottery">會員抽獎</a></li>
+                                        :href="newhost + '/memberLottery'">會員抽獎</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><a
-                                        href="http://localhost:8080/customerServiceUser">客服中心</a></li>
+                                        :href="newhost + '/customerServiceUser'">客服中心</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -96,6 +96,7 @@
                                         <label class="labels">Email：</label><input type="text" class="form-control"
                                             placeholder="enter phone number" :value="email" v-model="email">
                                     </div>
+                                    
                                     <div class="col-md-6">
                                         <label class="labels">開啟二次驗證（信箱）：
 
@@ -232,15 +233,15 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp, ref } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
             var jsonDataString = sessionStorage.getItem("loginStatus");
             var jsonData = JSON.parse(jsonDataString);
             const app = createApp({
                 data: function () {
                     return {
-                        host: host,
+                        newhost: newhost,
                         sessionData: null,
                         memberData: null,
                         memberPic: '',
@@ -257,10 +258,6 @@
                         photoBase64: '',
                         memberLv: '',
                         userAcc: '',
-                        // prizeID: null,
-                        // prizeName: null,
-                        // discount: null,
-                        // prizePicBase64: null,
                         prizes: null,
                         validation: null,
                     }
@@ -268,14 +265,11 @@
                 created() {
                     var jsonDataString = sessionStorage.getItem("loginStatus");
                     var jsonData = JSON.parse(jsonDataString);
-
-
-
                     this.sessionData = jsonData.mid
                     let request = {
                         mid: this.sessionData,
                     }
-                    axios.post(host + '/findMidString.controller', request)
+                    axios.post(newhost + '/findMidString.controller', request)
                         .then(response => {
                             this.memberData = response.data.showAll;
                             this.userName = this.memberData.userName;
@@ -290,11 +284,6 @@
                             this.userAcc = this.memberData.userAcc;
                             this.prizes = this.memberData.prizes;
                             this.validation = this.memberData.validation;
-                            // this.prizeID = this.prizes.prizeID;
-                            // this.prizeName = this.prizes.prizeName;
-                            // this.discount = this.prizes.discount;
-                            // this.prizePicBase64 = this.prizes.prizePicBase64;
-                            console.log(this.prizes)
                         })
                         .catch(error => {
                             console.error('Error:', error);
@@ -316,7 +305,7 @@
                         let formData = new FormData();
                         formData.append('userPic', document.querySelector('input[type=file]').files[0]);
                         formData.append('mid', this.mid);
-                        axios.post(host + '/uploadImage.controller', formData)
+                        axios.post(newhost + '/uploadImage.controller', formData)
                             .then(response => {
 
                                 Swal.fire({
@@ -325,7 +314,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then(function () {
-                                    window.location.href = host + "/memberCenter"
+                                    window.location.href = newhost + "/memberCenter"
                                 })
                             })
                             .catch(error => {
@@ -350,14 +339,14 @@
                             mid: this.mid,
                         }
                         console.log(update)
-                        axios.post(`${host}/userUpdate.controller`, update).then(response => {
+                        axios.post(newhost + "/userUpdate.controller", update).then(response => {
                             Swal.fire({
                                 title: "更新成功!",
                                 icon: "success",
                                 showConfirmButton: false,
                                 timer: 1500
                             }).then(function () {
-                                window.location.href = host + "/memberCenter"
+                                window.location.href = newhost + "/memberCenter"
                             })
 
                         })
@@ -377,7 +366,7 @@
                                     mid: this.mid,
                                 }
                                 console.log(search)
-                                axios.post(`${host}/searchPwd.controller`, search).then(response => {
+                                axios.post(newhost + "/searchPwd.controller", search).then(response => {
                                     console.log(response.data.pwd)
                                     const oldpwd = response.data.pwd
                                     if (data == response.data.pwd) {
@@ -394,7 +383,7 @@
                                                     mid: this.mid,
                                                     userPwd: newData
                                                 }
-                                                axios.post(`${host}/updatePwd.controller`, newpwd).then(response => {
+                                                axios.post(newhost + "/updatePwd.controller", newpwd).then(response => {
                                                     Swal.fire({
                                                         title: "更新成功!",
                                                         text: "請重新登入!!",
@@ -403,7 +392,7 @@
                                                         timer: 1500
                                                     }).then(function () {
                                                         sessionStorage.clear();
-                                                        window.location.href = host + "/index"
+                                                        window.location.href = newhost + "/index"
                                                     })
                                                 })
                                             }
@@ -416,7 +405,7 @@
                                             showConfirmButton: false,
                                             timer: 1500
                                         }).then(function () {
-                                            window.location.href = host + "/memberCenter"
+                                            window.location.href = newhost + "/memberCenter"
                                         })
                                     }
                                 })

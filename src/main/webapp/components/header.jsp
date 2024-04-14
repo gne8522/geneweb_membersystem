@@ -9,20 +9,21 @@
 		<div class="container">
 			<header
 				class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-				<a :href="`${host}/index`"
+				<a :href="newhost + '/index'"
 					class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
 					<img src="/images/company_icon.png" style="width: 200px; height: 120px;">
 				</a>
 
 				<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-					<li><a :href="`${host}/index`" class="nav-link px-2 link-secondary">回首頁</a></li>
+					<li><a :href="newhost + '/index'" class="nav-link px-2 link-secondary">回首頁</a></li>
 
 
-					<li v-if="logged == null"><a :href="`${host}/login`" class="nav-link px-2 link-dark">會員中心</a>
+					<li v-if="logged == null"><a :href="newhost + '/login'" class="nav-link px-2 link-dark">會員中心</a>
 					</li>
 
 
-					<li v-if="logged != null"><a :href="`${host}/memberCenter`" class="nav-link px-2 link-dark">會員中心</a>
+					<li v-if="logged != null"><a :href="newhost + '/memberCenter'"
+							class="nav-link px-2 link-dark">會員中心</a>
 					</li>
 					<li><a href="" class="nav-link px-2 link-dark">說明文件</a>
 					</li>
@@ -46,16 +47,16 @@
 
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+		<script src="/js/url.js"></script>
 		<script type="module">
 			import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-			import { host } from '/js/url.js';
 			var jsonDataString = sessionStorage.getItem("loginStatus");
 			var jsonData = JSON.parse(jsonDataString);
 			const app = createApp({
 				data: function () {
 					return {
 						logged: jsonData,
-						host: host
+						newhost: newhost
 					}
 				}, created() {
 					if (sessionStorage.getItem("Validation") !== null) {
@@ -65,17 +66,13 @@
 				, methods: {
 					logout: function () {
 						sessionStorage.clear();
-						window.location.href = host + "/logoutSuccess"
+						window.location.href = newhost + "/logoutSuccess"
 					},
 					tologin: function () {
-						window.location.href = host + "/login"
+						window.location.href = newhost + "/login"
 					},
 					toRegister: function () {
-						window.location.href = host + "/register"
-					},
-					toGroupTourData: function () {
-						sessionStorage.setItem("catalog", "5");
-						window.location.href = host + "/html/grouptour/ShowUserGroupTour.html"
+						window.location.href = newhost + "/register"
 					},
 				}
 

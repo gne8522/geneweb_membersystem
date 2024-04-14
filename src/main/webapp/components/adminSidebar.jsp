@@ -85,56 +85,40 @@
 
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+                <script src="/js/url.js"></script>
                 <script type="module">
                     import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-                    import { host } from '/js/url.js';
                     var jsonDataString = sessionStorage.getItem("adminData");
                     var catalog = sessionStorage.getItem("catalog");
-                    console.log(catalog)
                     var jsonData = JSON.parse(jsonDataString);
                     const app = createApp({
                         data: function () {
                             return {
                                 logged: jsonData,
-                                host: host,
+                                newhost: newhost,
                                 catalog: catalog
                             }
                         }, methods: {
                             logout: function () {
                                 sessionStorage.clear();
-                                window.location.href = host + "/logoutSuccess"
-
+                                window.location.href = this.newhost + "/logoutSuccess"
                             },
                             tobackend: function () {
                                 sessionStorage.setItem("catalog", "1");
-                                window.location.href = host + "/backend"
+                                window.location.href = this.newhost + "/backend"
+                                console.log(window.location.href)
                             },
                             tomemberQuery: function () {
                                 sessionStorage.setItem("catalog", "3");
-                                window.location.href = host + "/memberQuery"
-                            },
-                            toRentCarSystem: function () {
-                                sessionStorage.setItem("catalog", "7");
-                                window.location.href = host + "/html/rentcar/findAll.html"
-                            },
-                            toGroupTourSystem: function () {
-                                sessionStorage.setItem("catalog", "6");
-                                window.location.href = host + "/html/grouptour/ShowGroupTour.html"
-                            },
-                            toHotelSystem: function () {
-                                sessionStorage.setItem("catalog", "8");
-                                window.location.href = host + "/findAllHotels"
+                                window.location.href = this.newhost + "/memberQuery"
                             },
                             toCustomerService: function () {
                                 sessionStorage.setItem("catalog", "2");
-                                window.location.href = host + "/adminCustomerService"
+                                window.location.href = this.newhost + "/adminCustomerService"
                             },
                             toPlatformCenter: function () {
                                 sessionStorage.setItem("catalog", "4");
-                                window.location.href = host + "/adminPlatformCenter"
-                            },
-                            toForumSystem: function () {
-                                sessionStorage.setItem("catalog", "5");
+                                window.location.href = this.newhost + "/adminPlatformCenter"
                             },
 
                         }

@@ -56,64 +56,19 @@
     
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js";
-            import { host } from '/js/url.js';
             const app = createApp({
                 data: function () {
                     return {
                         userAcc: '',
                         userPwd: '',
                         userData: null,
-                        host: host,
+                        newhost: newhost,
                         
                     }
-                }, methods: {
-                    login(){                    
-                        let request = {
-                            userAcc: this.userAcc,
-                            userPwd: this.userPwd
-                        }
-                        console.log(request)
-                        axios.post("http://localhost:8080/userlogin.controller", request).then(function (response) {
-                            if(response.data.loginStatus === "Admin") {
-                                Swal.fire({
-                                    title: "工作人員歡迎!",
-                                    icon: "info",
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                }).then(function () {
-                                    console.log(response.data.loginStatus)
-                                    sessionStorage.setItem("adminData", JSON.stringify(response.data.adminData));
-                                    window.location.href = "http://localhost:8080/backend"                              
-                                })
-                                
-                            }else if (response.data.loginStatus) {
-                                Swal.fire({
-                                    title: "登入成功!",
-                                    text: response.data.messages,
-                                    icon: "success",
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                }).then(function () {
-                                    sessionStorage.setItem("loginStatus", JSON.stringify(response.data.loginStatus));
-                                    window.location.href = "http://localhost:8080/index"                               
-                                })
-                            }else{
-                                Swal.fire({
-                                    title: response.data.messages,
-                                    icon: "error",
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                }).then(function () {
-                                    window.location.href = "http://localhost:8080/login"
-                                })
-                            }
-                        }).catch();
-    
-                    }
-    
-    
+                }, methods: { 
                 }
             })
             app.mount("#app");

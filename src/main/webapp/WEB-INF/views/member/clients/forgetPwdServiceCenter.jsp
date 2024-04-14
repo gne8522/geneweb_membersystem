@@ -80,23 +80,13 @@
         </footer>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
             var appInstance;
             let isConnected = false;
-
-            let date = new Date().toISOString();
-            let currentDate = new Date(date);
-            currentDate.setHours(currentDate.getHours() + 8);
-            let formattedDate = currentDate.toISOString();
-            console.log(formattedDate);
-
-
             var jsonData = sessionStorage.getItem("forgetPwdMid");
-            
             const app = createApp({
                 data: function () {
                     return {
@@ -110,13 +100,14 @@
                         userAcc: jsonData.userAcc,
                         nameInput: null,
                         messageInput: null,
-                        NowDate: formattedDate,
+                        NowDate: new Date().toISOString(),
                         recordType: null,
+                        newhost: newhost
                     }
                 },
                 methods: {
                     connect() {
-                        axios.get(host + '/countMessaging.controller')
+                        axios.get(newhost + '/countMessaging.controller')
                             .then(response => {
                                 const connectionCount = response.data;
                                 if (connectionCount === 0) {
@@ -146,12 +137,12 @@
                                                 oncall: '1',
                                                 problemType: this.recordType,
                                             }
-                                            axios.post(host + '/AdminUpdateOncall.controller', requestAdmin)
+                                            axios.post(newhost + '/AdminUpdateOncall.controller', requestAdmin)
 
 
 
                                             console.log(this.recordType);
-                                            axios.post(host + '/updateMessagingStatus.controller', request)
+                                            axios.post(newhost + '/updateMessagingStatus.controller', request)
                                                 .then(response => {
                                                     const sock = new SockJS(this.websocketUrl);
                                                     this.client = Stomp.over(sock);
@@ -200,7 +191,7 @@
                                 messaging: '0',
                                 mid: this.mid
                             };
-                            axios.post(host + '/updateMessagingStatus.controller', request).then
+                            axios.post(newhost + '/updateMessagingStatus.controller', request).then
                                 (() => {
                                     setTimeout(() => {
                                         this.client.disconnect();
@@ -222,7 +213,7 @@
                                 oncall: '0',
                                 problemType: '沒問題',
                             }
-                            axios.post(host + '/AdminUpdateOncall.controller', requestAdmin)
+                            axios.post(newhost + '/AdminUpdateOncall.controller', requestAdmin)
 
 
                             let request = {
@@ -231,7 +222,7 @@
                                 recordDate: this.NowDate,
                                 recordText: JSON.stringify(this.messages)
                             }
-                            axios.post(host + '/insertServiceRecord.controller', request)
+                            axios.post(newhost + '/insertServiceRecord.controller', request)
                             console.log(this.messages)
                         }, 1100);
 
@@ -247,7 +238,7 @@
 
                     },
                     sendMessage() {
-                        let content = this.mid + ' ： ' + this.messageInput;
+                        let content = this.userAcc + ' ： ' + this.messageInput;
                         this.client.send(this.app, {}, JSON.stringify({ 'content': content }));
                         this.messageInput = null;
                     },
@@ -262,15 +253,15 @@
                     oncall: '0',
                     problemType: '沒問題',
                 }
-                axios.post(host + '/AdminUpdateOncall.controller', requestAdmin)
+                axios.post(newhost + '/AdminUpdateOncall.controller', requestAdmin)
 
                 let request = {
                     serviceTarget: this.mid,
                     recordType: this.recordType,
-                    recordDate: formattedDate,
+                    recordDate: new Date().toISOString(),
                     recordText: JSON.stringify(this.messages)
                 }
-                axios.post(host + '/insertServiceRecord.controller', request)
+                axios.post(newhost + '/insertServiceRecord.controller', request)
                 if (appInstance.connected) {
 
                     console.log(this.messages)

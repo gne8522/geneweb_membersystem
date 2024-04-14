@@ -97,15 +97,15 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp, ref } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
             var jsonDataString = sessionStorage.getItem("loginStatus");
             var jsonData = JSON.parse(jsonDataString);
             const app = createApp({
                 data: function () {
                     return {
-                        host: host,
+                        newhost: newhost,
                         sessionData: null,
                         memberData: null,
                         memberPic: '',
@@ -131,7 +131,7 @@
                     let request = {
                         mid: this.sessionData,
                     }
-                    axios.post(host + '/findMidString.controller', request)
+                    axios.post(newhost + '/findMidString.controller', request)
                         .then(response => {
                             this.memberData = response.data.showAll;
                             this.userName = this.memberData.userName;
@@ -165,7 +165,7 @@
                         let formData = new FormData();
                         formData.append('userPic', document.querySelector('input[type=file]').files[0]);
                         formData.append('mid', this.mid);
-                        axios.post(host + '/uploadImage.controller', formData)
+                        axios.post(newhost + '/uploadImage.controller', formData)
                             .then(response => {
 
                                 Swal.fire({
@@ -174,7 +174,7 @@
                                     showConfirmButton: false,
                                     timer: 1500
                                 }).then(function () {
-                                    window.location.href = host + "/memberCenter"
+                                    window.location.href = newhost + "/memberCenter"
                                 })
                             })
                             .catch(error => {
@@ -197,14 +197,14 @@
                             userTel: this.userTel,
                             mid: this.mid,
                         }
-                        axios.post(`${host}/userUpdate.controller`, update).then(response => {
+                        axios.post(newhost + "/userUpdate.controller", update).then(response => {
                             Swal.fire({
                                 title: "更新成功!",
                                 icon: "success",
                                 showConfirmButton: false,
                                 timer: 1500
                             }).then(function () {
-                                window.location.href = host + "/memberCenter"
+                                window.location.href = newhost + "/memberCenter"
                             })
 
                         })
@@ -224,7 +224,7 @@
                                     mid: this.mid,
                                 }
                                 console.log(search)
-                                axios.post(`${host}/searchPwd.controller`, search).then(response => {
+                                axios.post(newhost + "/searchPwd.controller", search).then(response => {
                                     console.log(response.data.pwd)
                                     const oldpwd = response.data.pwd
                                     if (data == response.data.pwd) {
@@ -241,7 +241,7 @@
                                                     mid: this.mid,
                                                     userPwd: newData
                                                 }
-                                                axios.post(`${host}/updatePwd.controller`, newpwd).then(response => {
+                                                axios.post(newhost + "/updatePwd.controller", newpwd).then(response => {
                                                     Swal.fire({
                                                         title: "更新成功!",
                                                         text: "請重新登入!!",
@@ -250,7 +250,7 @@
                                                         timer: 1500
                                                     }).then(function () {
                                                         sessionStorage.clear();
-                                                        window.location.href = host + "/index"
+                                                        window.location.href = newhost + "/index"
                                                     })
                                                 })
                                             }
@@ -263,7 +263,7 @@
                                             showConfirmButton: false,
                                             timer: 1500
                                         }).then(function () {
-                                            window.location.href = host + "/memberCenter"
+                                            window.location.href = newhost + "/memberCenter"
                                         })
                                     }
                                 })

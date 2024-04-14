@@ -91,6 +91,16 @@
                                         value="不顯示" v-model="gender" />
                                     <label class="form-check-label" for="otherGender">不顯示</label>
                                 </div>
+                                <div></div>
+                                <div class="col-md-6">
+                                    <label class="labels">二次驗證機制（信箱）：
+
+                                        <select id="validation" :value="validation" class="form-select"
+                                            aria-label="Default select example" v-model="validation">
+                                            <option value="0">關閉</option>
+                                            <option value="1">開啟</option>
+                                        </select>
+                                </div>
                             </div>
                                 <div class="col-md-6">
                                     <label class="labels">會員等級：</label><br>
@@ -175,9 +185,9 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js"
-            import { host } from '/js/url.js';
             var jsonDataString = sessionStorage.getItem("MemberData");
             var jsonData = JSON.parse(jsonDataString);
             console.log(jsonData)
@@ -198,6 +208,8 @@
                         mid: null,
                         sessionData: '',
                         lotteryTimes: null,
+                        newhost: newhost,
+                        validation: null,
                     }
                 }, created() {
                     var sessionMid = sessionStorage.getItem("MemberData");
@@ -205,7 +217,7 @@
                     let request = {
                         mid: sessionMid,
                     }
-                    axios.post(host + '/findMidString.controller', request)
+                    axios.post(newhost + '/findMidString.controller', request)
                         .then(response => {
                             this.memberData = response.data.showAll;
                             console.log(this.memberData)
@@ -220,6 +232,7 @@
                             this.userAcc = this.memberData.userAcc;
                             this.userPwd = this.memberData.userPwd;
                             this.lotteryTimes = this.memberData.lotteryTimes;
+                            this.validation = this.memberData.validation;
                         })
                         .catch(error => {
                             console.error('Error:', error);
@@ -239,24 +252,25 @@
                             birthday: this.birthday,
                             lotteryTimes: this.lotteryTimes,
                             mid: this.mid,
+                            validation: this.validation,
                         }
-                        axios.post(`${host}/adminMemberUpdate.controller`, update).then(() => {
+                        axios.post(newhost + "/adminMemberUpdate.controller", update).then(() => {
                             Swal.fire({
                                 title: "更新成功!",
                                 icon: "success",
                                 showConfirmButton: false,
                                 timer: 1500
                             }).then(function () {
-                                window.location.href = host + "/adminEdit"
+                                window.location.href = newhost + "/adminEdit"
                             })
 
                         })
                     },
                     gotoMemberQuery() {
-                        window.location.href = host + "/memberQuery"
+                        window.location.href = newhost + "/memberQuery"
                     },
                     gotoAdminEditPrize() {
-                        window.location.href = host + "/adminEditPrize"
+                        window.location.href = newhost + "/adminEditPrize"
                     },
                     deleteAcc() {
                         Swal.fire({
@@ -271,7 +285,7 @@
                                 let request = {
                                     mid: this.mid
                                 }
-                                axios.post(host + '/adminMemberDelete.controller', request)
+                                axios.post(newhost + '/adminMemberDelete.controller', request)
                                     .then(response => {
                                         Swal.fire({
                                             title: "刪除成功!",
@@ -279,7 +293,7 @@
                                             showConfirmButton: false,
                                             timer: 1500
                                         }).then(function () {
-                                            window.location.href = host + "/memberQuery"
+                                            window.location.href = newhost + "/memberQuery"
                                         })
                                     })
                                     .catch(error => {
@@ -303,7 +317,7 @@
                                 let request = {
                                     mid: this.mid
                                 }
-                                axios.post(host + '/updateDefaultPic.controller', request)
+                                axios.post(newhost + '/updateDefaultPic.controller', request)
                                     .then(response => {
                                         Swal.fire({
                                             title: "刪除成功!",
@@ -311,7 +325,7 @@
                                             showConfirmButton: false,
                                             timer: 1500
                                         }).then(function () {
-                                            window.location.href = host + "/adminEdit"
+                                            window.location.href = newhost + "/adminEdit"
                                         })
                                     })
                                     .catch(error => {

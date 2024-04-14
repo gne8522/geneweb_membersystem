@@ -1,4 +1,4 @@
 /**
  * 
  */
-export const host = "http://localhost:8080";
+const newhost = "http://localhost:8080";

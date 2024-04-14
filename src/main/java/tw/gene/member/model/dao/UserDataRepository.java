@@ -73,6 +73,12 @@ public interface UserDataRepository extends JpaRepository<UserData, Integer> {
 	@Transactional
 	@Query("UPDATE UserData SET messaging = ?1 WHERE mid = ?2")
 	void updateMessagingStatus(String messaging, String mid);
+	
+	// 重置所有會員連線狀態
+	@Modifying
+	@Transactional
+	@Query("UPDATE UserData SET messaging = 0")
+	void resetMessagingStatus();
 
 	// 初始化圖片資料
 	@Modifying

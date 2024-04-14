@@ -18,7 +18,7 @@
     <body class="text-center" id="app">
         <main class="form-signin">
 
-            <a href="http://localhost:8080/index"> <img class="mb-4" src="/images/sample02.png" alt="" width="272"
+            <a :href="newhost + '/index'"> <img class="mb-4" src="/images/sample02.png" alt="" width="272"
                     height="157"></a>
             <h1 class="h3 mb-3 fw-normal">請輸入帳號</h1>
 
@@ -41,9 +41,9 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://www.unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+        <script src="/js/url.js"></script>
         <script type="module">
             import { createApp } from "https://www.unpkg.com/vue@3.4.19/dist/vue.esm-browser.prod.js";
-            import { host } from '/js/url.js';
             const app = createApp({
                 data: function () {
                     return {
@@ -51,7 +51,7 @@
                         validationNUM: '',
                         userPwd: '',
                         userData: null,
-                        host: host,
+                        newhost: newhost,
                         email: null,
 
                     }
@@ -61,7 +61,7 @@
                         let request = {
                             userAcc: this.userAcc
                         }
-                        axios.post("http://localhost:8080/finduserAccAndMid.controller", request).then((response) => {
+                        axios.post(newhost + "/finduserAccAndMid.controller", request).then((response) => {
 
                             if (response.data.status == 'yes') {
                                 Swal.fire({
@@ -72,7 +72,7 @@
                                 }).then(() => {
                                     sessionStorage.setItem("forgetPwdMid", response.data.mid);
 
-                                    window.location.href = "http://localhost:8080/forgetPwdServiceCenter"
+                                    window.location.href = newhost + "/forgetPwdServiceCenter"
                                 })
 
                             } else {
