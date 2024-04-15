@@ -19,5 +19,10 @@ public interface PrizePoolRepository extends JpaRepository<PrizePool, Integer> {
 	@Query("UPDATE PrizePool p SET p.prize.prizeID = :newPrizeID WHERE p.prizepoolID = :prizepoolID")
 	void changePrizePool(@Param("newPrizeID") String newPrizeID, @Param("prizepoolID") String prizepoolID);
 	
+	// 更新獎品庫存
+	@Modifying
+	@Transactional
+	@Query("UPDATE PrizePool SET prizeInventory = ?1 WHERE prizepoolID = ?2")
+	void updatePrizeInventory(String prizeInventory, String prizepoolID);
 
 }

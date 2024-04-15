@@ -33,7 +33,7 @@
                                         :href="newhost + '/memberCenter'">個人檔案</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">會員抽獎</li>
                                 <li class="breadcrumb-item active" aria-current="page"><a
-                                    :href="newhost + '/customerServiceUser'">客服中心</a></li>
+                                        :href="newhost + '/customerServiceUser'">客服中心</a></li>
                             </ol>
                         </nav>
                     </div>
@@ -89,7 +89,9 @@
                         memberLv: '',
                         lastLotteryDate: new Date().toISOString().split('T')[0],
                         serverTime: '',
-                        newhost: newhost
+                        newhost: newhost,
+                        prizeInventory: null,
+                        prizepoolID: null,
                     }
                 },
                 created() {
@@ -122,61 +124,100 @@
                 },
                 methods: {
                     lottery() {
-                        axios.get(newhost + '/memberLottery.controller').then(response => {
-                            this.lotteryNumber = response.data.lotteryResult;
-                            let request = {
-                                prizepoolID: this.lotteryNumber
-                            }
-                            axios.post(newhost + '/findPrizePoolString.controller', request).then(response => {
-                                let responseData = response.data.prizepool;
-                                this.prizeName = responseData.prizeName;
-                                this.prizePicBase64 = responseData.prizePicBase64;
-                                this.prizeID = responseData.prizeID;
+                        if (this.lotteryTimes == 0 || this.lotteryTimes < 0) {
+                            Swal.fire({
+                                title: "沒有次數了!!",
+                                icon: "error",
+                                focusConfirm: false,
+                                confirmButtonText: '確認',
+                            })
+                        } else {
+                            axios.get(newhost + '/memberLottery.controller').then(response => {
+                                this.lotteryNumber = response.data.lotteryResult;
+                                let request = {
+                                    prizepoolID: this.lotteryNumber
+                                }
+                                axios.post(newhost + '/findPrizePoolString.controller', request).then(response => {
+                                    let responseData = response.data.prizepool;
+                                    this.prizeName = responseData.prizeName;
+                                    this.prizePicBase64 = responseData.prizePicBase64;
+                                    this.prizeID = responseData.prizeID;
+                                    this.prizeInventory = responseData.prizeInventory;
+                                    this.prizepoolID = responseData.prizepoolID;
 
-                                console.log(this.prizeID);
-                                if (this.prizeName == '無獎品') {
-                                    Swal.fire({
-                                        title: "沒中!!",
-                                        text: "再試一次!!",
-                                        icon: "warning",
-                                        focusConfirm: false,
-                                        confirmButtonText: '確認',
-                                    })
-
-
-                                } else {
-                                    Swal.fire({
-                                        title: '恭喜中獎!!<br>獎品是：' + this.prizeName,
-                                        html: '<div id="imageContainer" style="width: 300px; height: auto;"></div>',
-                                        text: this.prizeName,
-                                        focusConfirm: false,
-                                        confirmButtonText: '確認',
-                                        didOpen: () => {
-                                            const imageContainer = document.getElementById('imageContainer');
-                                            const img = document.createElement('img');
-                                            img.src = this.prizePicBase64;
-                                            img.style.width = '100%';
-                                            imageContainer.appendChild(img);
-                                        }
-                                    }).then(() => {
-                                        this.lotteryPrize = this.prizePicBase64;
-                                        let request = {
-                                            newPrizeID: this.prizeID,
-                                            newMid: this.mid
-                                        }
-                                        axios.post(newhost + '/InsertPrizetoUserStorage.controller', request).then(response => {
-
+                                    console.log(this.prizeID);
+                                    if (this.prizeName == '無獎品') {
+                                        Swal.fire({
+                                            title: "沒中!!",
+                                            text: "再試一次!!",
+                                            icon: "warning",
+                                            focusConfirm: false,
+                                            confirmButtonText: '確認',
+                                        }).then(() => {
+                                            let lotteryTimesUpdate = {
+                                                lotteryTimes: this.lotteryTimes - 1,
+                                                lastLotteryDate: this.lastLotteryDate,
+                                                mid: this.mid
+                                            }
+                                            axios.post(newhost + '/lotteryTimesUpdate.controller', lotteryTimesUpdate)
+                                            this.lotteryTimes = this.lotteryTimes - 1
                                         })
-                                    });
-                                }
-                                let lotteryTimesUpdate = {
-                                    lotteryTimes: this.lotteryTimes - 1,
-                                    lastLotteryDate: this.lastLotteryDate,
-                                    mid: this.mid
-                                }
-                                axios.post(newhost + '/lotteryTimesUpdate.controller', lotteryTimesUpdate)
-                                this.lotteryTimes = this.lotteryTimes - 1
 
+
+                                    } else {
+
+                                        if (this.prizeInventory == '0') {
+                                            Swal.fire({
+                                                title: "抱歉!!" + this.prizeName + " - 此獎項已經發放完畢!!",
+                                                text: "再試一次!!",
+                                                icon: "warning",
+                                                focusConfirm: false,
+                                                confirmButtonText: '確認',
+                                            })
+
+                                        } else {
+                                            Swal.fire({
+                                                title: '恭喜中獎!!<br>獎品是：' + this.prizeName,
+                                                html: '<div id="imageContainer" style="width: 300px; height: auto;"></div>',
+                                                text: this.prizeName,
+                                                focusConfirm: false,
+                                                confirmButtonText: '確認',
+                                                didOpen: () => {
+                                                    const imageContainer = document.getElementById('imageContainer');
+                                                    const img = document.createElement('img');
+                                                    img.src = this.prizePicBase64;
+                                                    img.style.width = '100%';
+                                                    imageContainer.appendChild(img);
+                                                }
+                                            }).then(() => {
+                                                let updateInventory = {
+                                                    prizeInventory: this.prizeInventory - 1,
+                                                    prizepoolID: this.prizeID,
+                                                }
+                                                axios.post(newhost + '/updatePrizeInventory.controller', updateInventory)
+
+                                                this.lotteryPrize = this.prizePicBase64;
+                                                let request = {
+                                                    newPrizeID: this.prizeID,
+                                                    newMid: this.mid
+                                                }
+                                                axios.post(newhost + '/InsertPrizetoUserStorage.controller', request).then(response => {
+                                                    let lotteryTimesUpdate = {
+                                                        lotteryTimes: this.lotteryTimes - 1,
+                                                        lastLotteryDate: this.lastLotteryDate,
+                                                        mid: this.mid
+                                                    }
+                                                    axios.post(newhost + '/lotteryTimesUpdate.controller', lotteryTimesUpdate)
+                                                    this.lotteryTimes = this.lotteryTimes - 1
+                                                })
+                                            });
+
+                                        }
+                                    }
+
+
+
+                                })
 
 
 
@@ -184,7 +225,9 @@
 
 
 
-                        })
+
+
+                        }
 
 
 

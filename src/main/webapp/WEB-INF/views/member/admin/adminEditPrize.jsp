@@ -159,14 +159,7 @@
                                         usid: getUsid
                                     }
                                     axios.post(newhost + "/deleteByUsid.controller", deleteUsid).then(() => {
-                                        Swal.fire({
-                                            title: "刪除成功!",
-                                            icon: "success",
-                                            showConfirmButton: false,
-                                            timer: 1500
-                                        }).then(function () {
-                                            window.location.href = newhost + "/adminEditPrize"
-                                        })
+                                        window.location.href = newhost + "/adminEditPrize"
 
                                     })
                                 }

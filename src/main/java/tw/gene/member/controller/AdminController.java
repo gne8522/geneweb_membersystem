@@ -297,7 +297,8 @@ public class AdminController {
 						.put("prizeID", result.getPrize().getPrizeID())
 						.put("prizeName", result.getPrize().getPrizeName())
 						.put("discount", result.getPrize().getDiscount())
-						.put("prizePicBase64", result.getPrize().getPrizePicBase64());
+						.put("prizePicBase64", result.getPrize().getPrizePicBase64())
+						.put("prizeInventory", result.getPrizeInventory());
 
 				array = array.put(user);
 			}
@@ -325,7 +326,7 @@ public class AdminController {
 			showQuery.getPrize().setPrizePicBase64(photoBase64);
 		}
 
-		JSONObject prizepool = new JSONObject().put("prizepoolID", showQuery.getPrizepoolID())
+		JSONObject prizepool = new JSONObject().put("prizepoolID", showQuery.getPrizepoolID()).put("prizeInventory", showQuery.getPrizeInventory())
 				.put("prizeID", showQuery.getPrize().getPrizeID()).put("prizeName", showQuery.getPrize().getPrizeName())
 				.put("discount", showQuery.getPrize().getDiscount())
 				.put("prizePicBase64", showQuery.getPrize().getPrizePicBase64());
@@ -335,6 +336,26 @@ public class AdminController {
 		return responseJson.toString();
 
 	}
+	
+	
+	// 單筆查詢獎池庫存
+		@PostMapping("/findPrizePoolInventory.controller")
+		@Transactional
+		public String findPrizePoolInventory(@RequestBody String body) throws JSONException, IOException {
+			JSONObject responseJson = new JSONObject();
+			JSONObject requestBodyJson = new JSONObject(body);
+			String prizepoolID = requestBodyJson.getString("prizepoolID");
+			PrizePool showQuery = aService.findPrizePoolString(prizepoolID);
+
+			JSONObject prizepoolData = new JSONObject().put("prizepoolID", showQuery.getPrizepoolID()).put("prizeInventory", showQuery.getPrizeInventory());
+
+			responseJson.put("prizepoolData", prizepoolData);
+
+			return responseJson.toString();
+
+		}
+	
+	
 
 	// 新增獎品
 	@PostMapping("/newPrize.controller")
@@ -530,6 +551,16 @@ public class AdminController {
 	@Transactional
 	public String resetMessagingStatus() throws IOException, JSONException {
 		aService.resetMessagingStatus();
+		return "成功!";
+	}
+	
+	// 更新獎品庫存
+	@PostMapping("/updatePrizeInventory.controller")
+	public String updatePrizeInventory(@RequestBody String body) throws IOException, JSONException {
+		JSONObject requestBodyJson = new JSONObject(body);
+		String prizeInventory = requestBodyJson.getString("prizeInventory");
+		String prizepoolID = requestBodyJson.getString("prizepoolID");
+		aService.updatePrizeInventory(prizeInventory,prizepoolID);
 		return "成功!";
 	}
 	

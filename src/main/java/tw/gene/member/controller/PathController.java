@@ -66,6 +66,12 @@ public class PathController {
 		return "member/logoutSuccess";
 	}
 	
+	// 導到"說名文件"
+	@GetMapping("/instructions")
+	public String goInstructions() {
+		return "member/clients/instructions";
+	}
+	
 	// 導到"二次驗證"
 	@GetMapping("/validationPlace")
 	public String goValidationPlace() {

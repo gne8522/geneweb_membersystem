@@ -70,7 +70,7 @@
                         <div class="row">
                             <div class="col-md-4" v-for="(allPrize, index) in allPrize" :key="index">
                                 <div class="card mb-3">
-<br>
+                                    <br>
                                     <h5 class="card-title">獎池位置：{{ allPrize.prizepoolID }}</h5>
                                     <img :src="allPrize.prizePicBase64" class="card-img-top" alt="..."
                                         v-if="allPrize.prizePicBase64 != null" style="width: 370px;height: 250px;">
@@ -78,10 +78,12 @@
                                         style="width: 370px;height: 250px;"></span>
                                     <div class="card-body">
                                         <h5 class="card-title">獎品：{{ allPrize.prizeName }}</h5>
+                                        <h5 class="card-title">數量：{{ allPrize.prizeInventory }}</h5>
                                         <p style="color: gray; font-size: 15px;">一個區域代表中獎率20%</p>
-                                        <!-- <h5 class="card-title">獎品名稱：{{ allPrize.prizeName }}</h5>
-                                        <h5 class="card-title">折扣：{{ allPrize.discount }}</h5> -->
                                         <input type="text" :value="allPrize.prizepoolID" class="prizepoolID" hidden>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#InventoryModal"
+                                            @click="showInventory(index)">更改數量</button>&nbsp;
                                         <button type="button" class="btn btn-primary" @click="listPrize(index)"
                                             data-bs-toggle="modal" data-bs-target="#exampleModal">更改品項</button>&nbsp;
                                         <button type="button" class="btn btn-warning"
@@ -100,7 +102,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">獎池位置：{{ prizeID }}</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">欲更改的產品：</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                         aria-label="Close"></button>
                                 </div>
@@ -155,7 +157,38 @@
                     </div>
 
 
-
+                    <!-- 彈出更改數量視窗內容 -->
+                    <div class="modal fade" id="InventoryModal" tabindex="-1" aria-labelledby="InventoryModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">欲更改的數量：</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div align="center">
+                                        <div class="row">
+                                            <div class="col-md-4" style="width: 500px;">
+                                                <div class="card mb-3">
+                                                    <div class="card-body">
+                                                        <input type="number" min="0" v-model="prizeInventory"
+                                                            style="width: 100px;">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary"
+                                        @click="updatePrizeInventory">存檔</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
 
 
@@ -180,12 +213,14 @@
                         newhost: newhost,
                         prizePic: null,
                         prizepoolID: null,
+                        prizeInventory: null,
                     }
                 },
                 created() {
                     axios.post(newhost + '/listPrizePool.controller')
                         .then(response => {
                             this.allPrize = response.data.prizepool;
+
                             console.log("this.allPrize" + this.allPrize)
                         })
                         .catch(error => {
@@ -276,6 +311,37 @@
                             window.location.href = newhost + "/adminPrizePoolEdit"
                         })
                     },
+                    showInventory(index) {
+                        let getPrizePoolID = document.querySelectorAll(".prizepoolID")[index];
+                        this.prizepoolID = getPrizePoolID.value;
+                        console.log(this.prizepoolID)
+                        let request = {
+                            prizepoolID: this.prizepoolID
+                        }
+                        axios.post(newhost + '/findPrizePoolInventory.controller', request)
+                            .then(response => {
+
+                                this.prizeInventory = response.data.prizepoolData.prizeInventory;
+
+                                this.$forceUpdate();
+
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    },
+                    updatePrizeInventory() {
+                        let updateInventory = {
+                            prizeInventory: this.prizeInventory,
+                            prizepoolID: this.prizepoolID,
+                        }
+                        console.log(updateInventory)
+                        axios.post(newhost + '/updatePrizeInventory.controller', updateInventory).then(response => {
+                            window.location.href = newhost + "/adminPrizePoolEdit"
+                        })
+                    },
+
+
 
                 }
 

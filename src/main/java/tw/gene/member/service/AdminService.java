@@ -129,6 +129,12 @@ public class AdminService {
 	public void updatePrizePool(String prizeName, String discount, byte[] picBytes, String prizeID) {
 		prizeRespo.updatePrizePool(prizeName, discount, picBytes, prizeID);
 	}
+	
+	// 更新獎品庫存
+	public void updatePrizeInventory(String prizeInventory, String prizepoolID) {
+		prizePoolRespo.updatePrizeInventory(prizeInventory, prizepoolID);
+	}
+	
 
 //	 更新獎品資訊無圖片
 	public void updatePrizePoolNoPic(String prizeName, String discount, String prizeID) {

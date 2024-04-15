@@ -22,6 +22,9 @@ public class PrizePool {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int prizepoolID;
 	
+	@Column(name = "PRIZEINVENTORY")
+	private int prizeInventory;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FK_PRIZEID")
 	private Prize prize;
@@ -41,5 +44,15 @@ public class PrizePool {
 	public void setPrize(Prize prize) {
 		this.prize = prize;
 	}
+
+	public int getPrizeInventory() {
+		return prizeInventory;
+	}
+
+	public void setPrizeInventory(int prizeInventory) {
+		this.prizeInventory = prizeInventory;
+	}
+	
+	
 
 }

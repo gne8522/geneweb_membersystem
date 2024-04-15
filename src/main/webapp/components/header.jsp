@@ -25,7 +25,7 @@
 					<li v-if="logged != null"><a :href="newhost + '/memberCenter'"
 							class="nav-link px-2 link-dark">會員中心</a>
 					</li>
-					<li><a href="" class="nav-link px-2 link-dark">說明文件</a>
+					<li><a :href="newhost + '/instructions'" class="nav-link px-2 link-dark">說明文件</a>
 					</li>
 
 				</ul>
