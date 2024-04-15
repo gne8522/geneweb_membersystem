@@ -191,9 +191,13 @@ DROP TABLE ServiceRecord<br>
 ● 設計一天只能抽固定次數的抽獎機制，並且是以伺服器的時間為判斷，所以不會有客戶利用更改時間來不法取得抽獎次數<br>
 ● 給予會員”個人倉庫”收藏獎品，使用者能快速知道自己的獎品內容<br>
 
+![image](https://github.com/gne8522/geneweb/assets/156037229/f50b6e57-0231-4121-b128-286837549909)
+
 ![image](https://github.com/gne8522/geneweb/assets/156037229/83b58703-6aad-492d-bfdb-67e5fe31fa43)
 
 ![image](https://github.com/gne8522/geneweb/assets/156037229/f5d1bb9a-96cf-42ee-8084-70264d83133e)
+
+![image](https://github.com/gne8522/geneweb/assets/156037229/fd29730b-9505-46c4-8b42-0426faade2cd)
 
 ![image](https://github.com/gne8522/geneweb/assets/156037229/b6a2df1c-571c-486b-95c0-f7136e0f98ad)
 
