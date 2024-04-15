@@ -65,7 +65,7 @@ CREATE TABLE AdminData(<br>
 );<br>
 <br>
 
-INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員TEST', 'workertest', '1234', '0999000000', 'workertest@gmail.com');<br>
+INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員', 'worker', '1234', '0999000000', 'workertest@gmail.com');<br>
 INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員一號', 'worker01', 'worker01A@', '0999000001', 'worker01@gmail.com');<br>
 INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員二號', 'worker02', 'worker02A@', '0999000002', 'worker02@gmail.com');<br>
 INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員三號', 'worker03', 'worker03A@', '0999000003', 'worker03@gmail.com');<br>
