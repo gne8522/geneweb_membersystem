@@ -12,8 +12,8 @@ public class MailConfig {
 
 	private final String EMAIL_HOST = "smtp.gmail.com";
 	private final int EMAIL_PORT = 587;
-	private final String EMAIL_USERNAME = "gne8522@gmail.com";
-	private final String EMAIL_PASSWORD = "pfaxfwlodufhohjq";
+	private final String EMAIL_USERNAME = "";
+	private final String EMAIL_PASSWORD = "";
 
 	@Bean
 	public JavaMailSender javaMailSender() {
