@@ -1,9 +1,15 @@
-MS SQL 資料庫語法<br>
-CREATE DATABASE geneweb;<br>
-<br>
-USE geneweb;<br>
+
+目前我有使用Azure架設網頁，網址：http://geneweb.net/ <br>
+（找不到畫面可能是因為我關掉Azure、執行網站維護，或是網域的合約到期）<br>
 
 -----------------------------------------------------------------------------------------------------------------------------------------
+
+MS SQL 資料庫語法<br>
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+CREATE DATABASE geneweb;<br>
+USE geneweb;<br>
+<br>
 --會員系統
 <br>
 CREATE TABLE UserData(<br>
@@ -59,7 +65,7 @@ CREATE TABLE AdminData(<br>
 );<br>
 <br>
 
-INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員TEST', 'workertest', '1234', '0999000000', 'workertest@gmail.com');<br>
+INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員', 'worker', '1234', '0999000000', 'workertest@gmail.com');<br>
 INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員一號', 'worker01', 'worker01A@', '0999000001', 'worker01@gmail.com');<br>
 INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員二號', 'worker02', 'worker02A@', '0999000002', 'worker02@gmail.com');<br>
 INSERT INTO AdminData (adminName, adminAcc, adminPwd, adminTel,adminEmail) VALUES ('工作人員三號', 'worker03', 'worker03A@', '0999000003', 'worker03@gmail.com');<br>
@@ -72,7 +78,7 @@ SELECT * FROM AdminData;<br>
 <br>
 DROP TABLE AdminData;<br>
 
-
+<br>
 
 CREATE TABLE UserStorage(<br>
 usid INT not null PRIMARY KEY IDENTITY(1000,1),<br>
@@ -142,13 +148,17 @@ DROP TABLE ServiceRecord<br>
 
 
 
+-----------------------------------------------------------------------------------------------------------------------------------------
 
+網頁介紹<br>
 
+-----------------------------------------------------------------------------------------------------------------------------------------
 
 1. 基礎的前端頁面，我是使用bootstrap做畫面呈現，使用Vue來操縱DOM，使用Axios來實現Ajax非同步技術
 ![image](https://github.com/gne8522/geneweb/assets/156037229/95afb251-b7ae-46cc-8aad-bf9e5af4a7ec)
 <br>
----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------
+
 <br>
 2. 基礎的會員資料CRUD<br>
 ● 註冊表單時，填入的帳號，會跟資料庫做檢查，重複則不能使用 <br>
@@ -159,6 +169,9 @@ DROP TABLE ServiceRecord<br>
 ![image](https://github.com/gne8522/geneweb/assets/156037229/77947525-d8cd-4e72-a1c7-389e422f423a)
 
 ![image](https://github.com/gne8522/geneweb/assets/156037229/95cdc4fd-646a-4a36-bfc1-49c326ca2436)
+
+![image](https://github.com/gne8522/geneweb/assets/156037229/885b8437-cf83-484b-9b35-89c8b25c09a2)
+
 
 ---------------------------------------------------------------------------------------------------------
 <br>
@@ -174,12 +187,17 @@ DROP TABLE ServiceRecord<br>
 <br>
 4. 完整的抽獎功能<br>
 ● 簡易調整中獎機率，可新增獎品並快速調整獎池內容<br>
+● 可調整獎品庫存量，獎品被抽完，客戶端再次抽中會顯示"此獎項已經發放完畢!!"<br>
 ● 設計一天只能抽固定次數的抽獎機制，並且是以伺服器的時間為判斷，所以不會有客戶利用更改時間來不法取得抽獎次數<br>
 ● 給予會員”個人倉庫”收藏獎品，使用者能快速知道自己的獎品內容<br>
+
+![image](https://github.com/gne8522/geneweb/assets/156037229/f50b6e57-0231-4121-b128-286837549909)
 
 ![image](https://github.com/gne8522/geneweb/assets/156037229/83b58703-6aad-492d-bfdb-67e5fe31fa43)
 
 ![image](https://github.com/gne8522/geneweb/assets/156037229/f5d1bb9a-96cf-42ee-8084-70264d83133e)
+
+![image](https://github.com/gne8522/geneweb/assets/156037229/fd29730b-9505-46c4-8b42-0426faade2cd)
 
 ![image](https://github.com/gne8522/geneweb/assets/156037229/b6a2df1c-571c-486b-95c0-f7136e0f98ad)
 
