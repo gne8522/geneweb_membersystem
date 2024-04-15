@@ -78,7 +78,7 @@ SELECT * FROM AdminData;<br>
 <br>
 DROP TABLE AdminData;<br>
 
-
+<br>
 
 CREATE TABLE UserStorage(<br>
 usid INT not null PRIMARY KEY IDENTITY(1000,1),<br>
